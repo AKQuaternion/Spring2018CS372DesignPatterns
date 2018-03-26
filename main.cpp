@@ -18,8 +18,8 @@ using std::move;
 int main() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
     cout << pi->evaluate() << endl;
-    unique_ptr<Expression> two = make_unique<Number>(2.0);
-    auto sum = make_unique<SumExpression>(move(pi),move(two));
+    unique_ptr<Term> two = make_unique<Number>(2.0);
+    auto sum = make_unique<Sum>(move(pi),move(two));
     cout << sum->evaluate() << endl;
     cout << sum->toString() << endl;
     return 0;
