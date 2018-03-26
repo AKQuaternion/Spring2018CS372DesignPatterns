@@ -8,6 +8,7 @@
 
 #include "Expression.hpp"
 using std::unique_ptr;
+#include <map>
 
 Expression::~Expression() = default;
 
@@ -20,9 +21,9 @@ std::string Sum::toString()
     return _lhs->toString() + "+" + _rhs->toString();
 }
 
-double Sum::evaluate()
+double Sum::evaluate(const std::map<std::string,double> &context)
 {
-    return _lhs->evaluate() + _rhs->evaluate();
+    return _lhs->evaluate(context) + _rhs->evaluate(context);
 }
 
 Difference::Difference(unique_ptr<Expression> lhs, unique_ptr<Term> rhs)
@@ -31,12 +32,12 @@ Difference::Difference(unique_ptr<Expression> lhs, unique_ptr<Term> rhs)
 
 std::string Difference::toString()
 {
-    return _lhs->toString() + "+" + _rhs->toString();
+    return _lhs->toString() + "-" + _rhs->toString();
 }
 
-double Difference::evaluate()
+double Difference::evaluate(const std::map<std::string,double> &context)
 {
-    return _lhs->evaluate() - _rhs->evaluate();
+    return _lhs->evaluate(context) - _rhs->evaluate(context);
 }
 
 Product::Product(unique_ptr<Term> lhs, unique_ptr<Factor> rhs)
@@ -48,9 +49,9 @@ std::string Product::toString()
     return _lhs->toString() + "*" + _rhs->toString();
 }
 
-double Product::evaluate()
+double Product::evaluate(const std::map<std::string,double> &context)
 {
-    return _lhs->evaluate() * _rhs->evaluate();
+    return _lhs->evaluate(context) * _rhs->evaluate(context);
 }
 
 Quotient::Quotient(unique_ptr<Term> lhs, unique_ptr<Factor> rhs)
@@ -62,15 +63,15 @@ std::string Quotient::toString()
     return _lhs->toString() + "/" + _rhs->toString();
 }
 
-double Quotient::evaluate()
+double Quotient::evaluate(const std::map<std::string,double> &context)
 {
-    return _lhs->evaluate() / _rhs->evaluate();
+    return _lhs->evaluate(context) / _rhs->evaluate(context);
 }
 
 Number::Number(double value) :_value(value)
 {}
 
-double Number::evaluate()
+double Number::evaluate(const std::map<std::string,double> &context)
 {
     return _value;
 }
@@ -78,6 +79,19 @@ double Number::evaluate()
 std::string Number::toString()
 {
     return std::to_string(_value);
+}
+
+Variable::Variable(std::string name):_name(name)
+{}
+
+double Variable::evaluate(const std::map<std::string,double> &context)
+{
+    return context.at(_name);
+}
+
+std::string Variable::toString()
+{
+    return _name;
 }
 
 Parenthetical::Parenthetical(unique_ptr<Expression> expression)
@@ -89,7 +103,7 @@ std::string Parenthetical::toString()
     return "("+ _expression->toString() + ")";
 }
 
-double Parenthetical::evaluate()
+double Parenthetical::evaluate(const std::map<std::string,double> &context)
 {
-    return _expression->evaluate();
+    return _expression->evaluate(context);
 }
