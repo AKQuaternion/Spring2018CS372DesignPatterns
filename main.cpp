@@ -16,7 +16,8 @@ using std::move;
 #include "Expression.hpp"
 using std::map;
 using std::string;
-int main() {
+#include "Composite.hpp"
+void testExpression() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
     cout << pi->evaluate({}) << endl;
     unique_ptr<Term> two = make_unique<Number>(2.0);
@@ -31,6 +32,19 @@ int main() {
     cout << diff->evaluate(context) << endl;
     context["x"] = 13;
     cout << diff->evaluate(context) << endl;
+}
+
+int main() {
+    auto f1 = make_unique<File>("f1",1);
+    cout << f1->getName() << " " << f1->getSize() << endl;
+    auto folder1 = make_unique<Folder>("folder1");
+    folder1->add(move(f1));
+    cout << folder1->getName() << " " << folder1->getSize() << endl;
+    folder1->add(make_unique<File>("f2",2));
+    folder1->add(make_unique<File>("f3",3));
+    cout << folder1->getName() << " " << folder1->getSize() << endl;
+    folder1->remove("f2");
+    cout << folder1->getName() << " " << folder1->getSize() << endl;
 
     return 0;
 }
