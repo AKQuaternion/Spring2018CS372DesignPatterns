@@ -17,6 +17,8 @@ using std::move;
 using std::map;
 using std::string;
 #include "Composite.hpp"
+#include "Visitor.hpp"
+
 void testExpression() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
     cout << pi->evaluate({}) << endl;
@@ -34,7 +36,8 @@ void testExpression() {
     cout << diff->evaluate(context) << endl;
 }
 
-int main() {
+void testComposite()
+{
     auto f1 = make_unique<File>("f1",1);
     cout << f1->getName() << " " << f1->getSize() << endl;
     auto folder1 = make_unique<Folder>("folder1");
@@ -45,6 +48,40 @@ int main() {
     cout << folder1->getName() << " " << folder1->getSize() << endl;
     folder1->remove("f2");
     cout << folder1->getName() << " " << folder1->getSize() << endl;
+    
+    auto nameFiles = make_unique<Folder>("nameFiles");
+    nameFiles->add(make_unique<File>("Joe",20));
+    nameFiles->add(make_unique<File>("Eliza",40));
+    nameFiles->add(make_unique<File>("Chris",10));
+    nameFiles->add(make_unique<File>("Samantha",30));
+    auto fruitFiles = make_unique<Folder>("fruitFiles");
+    fruitFiles->add(make_unique<File>("Banana",69));
+    fruitFiles->add(make_unique<File>("Apple",131));
+    fruitFiles->add(make_unique<File>("Orange",123));
+    fruitFiles->add(make_unique<File>("Plum",577));
+    auto onionFiles = make_unique<Folder>("Onions");
+    onionFiles->add(make_unique<File>("Walla Walla",1000));
+    onionFiles->add(make_unique<File>("Vidalia",1000));
+    onionFiles->add(make_unique<File>("Yellow",1000));
+    onionFiles->add(make_unique<File>("White",1000));
+    onionFiles->add(make_unique<File>("Red",1000));
+    auto veggieFiles = make_unique<Folder>("Veggies");
+    veggieFiles->add(move(onionFiles));
+    veggieFiles->add(make_unique<File>("Asparagus",1));
+    veggieFiles->add(make_unique<File>("Broccoli",2));
+    veggieFiles->add(make_unique<File>("Zucchini",3));
+    auto allFiles = make_unique<Folder>("Files");
+    allFiles->add(move(nameFiles));
+    allFiles->add(move(fruitFiles));
+    allFiles->add(move(veggieFiles));
+    allFiles->add(make_unique<File>("A lone file",3994));
+    cout << allFiles->getName() << " " << allFiles->getSize() << endl;
 
+    RecursiveListingVisitor v;
+    allFiles->accept(&v);
+}
+
+int main() {
+    testComposite();
     return 0;
 }

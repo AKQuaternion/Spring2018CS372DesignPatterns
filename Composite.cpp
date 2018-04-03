@@ -7,6 +7,7 @@
 //
 
 #include "Composite.hpp"
+#include "Visitor.hpp"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -35,6 +36,11 @@ int File::getSize() const
     return _size;
 }
 
+void File::accept(const Visitor *vPtr) const
+{
+    vPtr->visit(this);
+}
+
 void Folder::print() const
 {
     cout << "Folder: " << getName() << "   " << getSize() << endl;
@@ -49,6 +55,10 @@ int Folder::getSize() const
     return total;
 }
 
+void Folder::accept(const Visitor *vPtr) const
+{
+    vPtr->visit(this);
+}
 
 void Folder::add(std::unique_ptr<Component> child)
 {
