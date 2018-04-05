@@ -7,18 +7,17 @@
 //
 
 #include "Composite.hpp"
-#include "Visitor.hpp"
 #include <iostream>
 using std::cout;
 using std::endl;
 using std::move;
 
-Component::Component(std::string_view name):_name(name)
+ComponentBase::~ComponentBase() = default;
+
+ComponentBase::ComponentBase(std::string_view name):_name(name)
 {}
 
-Component::~Component() = default;
-
-std::string Component::getName() const
+std::string ComponentBase::getName() const
 {
     return _name;
 }
@@ -36,16 +35,10 @@ int File::getSize() const
     return _size;
 }
 
-void File::accept(const Visitor *vPtr) const
-{
-    vPtr->visit(this);
-}
-
 void Folder::print() const
 {
     cout << "Folder: " << getName() << "   " << getSize() << endl;
 }
-
 
 int Folder::getSize() const
 {
@@ -55,16 +48,10 @@ int Folder::getSize() const
     return total;
 }
 
-void Folder::accept(const Visitor *vPtr) const
-{
-    vPtr->visit(this);
-}
-
-void Folder::add(std::unique_ptr<Component> child)
+void Folder::add(std::unique_ptr<ComponentBase> child)
 {
     _children.push_back(move(child));
 }
-
 
 void Folder::remove(std::string_view name)
 {
@@ -74,7 +61,6 @@ void Folder::remove(std::string_view name)
             return;
         }
 }
-
 
 const Folder::ChildContainer & Folder::getChildren() const
 {

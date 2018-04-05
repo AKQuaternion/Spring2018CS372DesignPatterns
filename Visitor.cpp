@@ -6,22 +6,33 @@
 //  Copyright © 2018 Chris Hartman. All rights reserved.
 //
 
-#include "Visitor.hpp"
+#include "Composite.hpp"
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <iomanip>
 
+namespace {
+    void tab(int n)
+    {
+        for(
+    }
+}
 Visitor::~Visitor() = default;
 
-void RecursiveListingVisitor::visit(const File *f) const
+void RecursiveListingVisitor::visit(const File *f)
 {
-    cout << f->getName() << "   " << f->getSize() << endl;
+    cout << std::setw(4*_depth) << " " << std::left << std::setw(13) << f->getName();
+    cout << std::right << std::setw(10) << f->getSize() << endl;
 }
 
-void RecursiveListingVisitor::visit(const Folder *f) const
+void RecursiveListingVisitor::visit(const Folder *f) 
 {
-    cout << f->getName() << "   " << f->getSize() << endl;
+    cout << std::left << std::setw(13) << f->getName();
+    cout << std::right << std::setw(10) << f->getSize() << endl;
+    ++_depth;
     for(const auto &childPtr : f->getChildren())
         childPtr->accept(this);
+    --_depth;
 }
 

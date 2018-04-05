@@ -13,40 +13,52 @@
 #include <string_view>
 #include <string>
 
-class Visitor;
+#include "Visitor.hpp"
 
-class Component {
+class ComponentBase
+{
 public:
-    Component(std::string_view name);
-    ~Component();
+    ComponentBase(std::string_view name);
+    virtual ~ComponentBase();
     virtual void print()  const=0;
     virtual int getSize() const=0;
-    virtual void accept(const Visitor *) const=0;
+    virtual void accept(Visitor *) const=0;
     std::string getName() const;
 private:
     const std::string _name;
 };
 
-class File : public Component
+template <typename Derived>
+class Component : public ComponentBase {
+public:
+    using ComponentBase::ComponentBase;
+    virtual void accept(Visitor *) const override final;
+};
+
+template<typename T>
+void Component<T>::accept(Visitor *v) const
+{
+    v->visit(static_cast<const T *>(this));
+}
+
+class File : public Component<File>
 {
 public:
     File(std::string_view name, int size);
     virtual void print()  const override;
     virtual int getSize() const override;
-    virtual void accept(const Visitor *) const override;
 private:
     int _size;
 };
 
-class Folder : public Component
+class Folder : public Component<Folder>
 {
 public:
     using Component::Component;
-    using ChildContainer = std::vector<std::unique_ptr<Component>>;
+    using ChildContainer = std::vector<std::unique_ptr<ComponentBase>>;
     virtual void print()  const override;
     virtual int getSize() const override;
-    virtual void accept(const Visitor *) const override;
-    void add(std::unique_ptr<Component>);
+    void add(std::unique_ptr<ComponentBase>);
     void remove(std::string_view name);
     const ChildContainer & getChildren() const;
 private:
