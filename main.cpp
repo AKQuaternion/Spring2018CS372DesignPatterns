@@ -38,16 +38,16 @@ void testExpression() {
 
 void testComposite()
 {
-    auto f1 = make_unique<File>("f1",1);
-    cout << f1->getName() << " " << f1->getSize() << endl;
-    auto folder1 = make_unique<Folder>("folder1");
-    folder1->add(move(f1));
-    cout << folder1->getName() << " " << folder1->getSize() << endl;
-    folder1->add(make_unique<File>("f2",2));
-    folder1->add(make_unique<File>("f3",3));
-    cout << folder1->getName() << " " << folder1->getSize() << endl;
-    folder1->remove("f2");
-    cout << folder1->getName() << " " << folder1->getSize() << endl;
+//    auto f1 = make_unique<File>("f1",1);
+//    cout << f1->getName() << " " << f1->getSize() << endl;
+//    auto folder1 = make_unique<Folder>("folder1");
+//    folder1->add(move(f1));
+//    cout << folder1->getName() << " " << folder1->getSize() << endl;
+//    folder1->add(make_unique<File>("f2",2));
+//    folder1->add(make_unique<File>("f3",3));
+//    cout << folder1->getName() << " " << folder1->getSize() << endl;
+//    folder1->remove("f2");
+//    cout << folder1->getName() << " " << folder1->getSize() << endl;
     
     auto nameFiles = make_unique<Folder>("nameFiles");
     nameFiles->add(make_unique<File>("Joe",20));

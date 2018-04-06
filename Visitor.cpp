@@ -15,19 +15,23 @@ using std::endl;
 namespace {
     void tab(int n)
     {
-        for(
+        for(int i=0;i<n;++i)
+            cout << " ";
     }
 }
+
 Visitor::~Visitor() = default;
 
 void RecursiveListingVisitor::visit(const File *f)
 {
-    cout << std::setw(4*_depth) << " " << std::left << std::setw(13) << f->getName();
+    tab(4*_depth);
+    cout << std::left << std::setw(13) << f->getName();
     cout << std::right << std::setw(10) << f->getSize() << endl;
 }
 
 void RecursiveListingVisitor::visit(const Folder *f) 
 {
+    tab(4*_depth);
     cout << std::left << std::setw(13) << f->getName();
     cout << std::right << std::setw(10) << f->getSize() << endl;
     ++_depth;
