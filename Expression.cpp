@@ -71,7 +71,7 @@ double Quotient::evaluate(const std::map<std::string,double> &context)
 Number::Number(double value) :_value(value)
 {}
 
-double Number::evaluate(const std::map<std::string,double> &context)
+double Number::evaluate(const std::map<std::string,double> &)
 {
     return _value;
 }
