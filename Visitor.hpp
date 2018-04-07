@@ -17,7 +17,7 @@ class Visitor
 public:
     virtual void visit(const File *) =0;
     virtual void visit(const Folder *) =0;
-    ~Visitor();
+    virtual ~Visitor();
 };
 
 class RecursiveListingVisitor : public Visitor
