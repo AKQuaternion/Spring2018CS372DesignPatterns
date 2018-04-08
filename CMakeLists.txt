@@ -9,11 +9,11 @@ set(CMAKE_CXX_FLAGS #turn on all warnings, minus some that are not useful
     ")
 
 project (DesignPatterns)
-add_executable(test catchmain.cpp tests.cpp )
-add_executable(DesignPatterns
-    Visitor.cpp Visitor.hpp
+set(SOURCES Visitor.cpp Visitor.hpp
     Expression.cpp Expression.hpp
     Composite.cpp Composite.hpp
-    main.cpp
-    )
+)
+
+add_executable(test ${SOURCES} catchmain.cpp tests.cpp )
+add_executable(DesignPatterns ${SOURCES} main.cpp)
 
