@@ -1,12 +1,20 @@
-
 cmake_minimum_required (VERSION 3.8)
+set(CMAKE_CXX_STANDARD 17) #Use c++17
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #require C++17 (otherwise allows fallback to earlier version)
+set(CMAKE_CXX_EXTENSIONS OFF) #Don't use non-standard compiler extensions
+
+#turn on all warnings, minus some that are not useful
+
+set(CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra -Weverything \
+    -Wno-padded -Wno-c++98-compat -Wno-weak-vtables -Wno-missing-prototypes \
+    ")
+
 project (DesignPatterns)
-add_executable(DesignPatterns Visitor.cpp Expression.cpp Composite.cpp main.cpp)
-set_property(TARGET DesignPatterns PROPERTY CXX_STANDARD 17)
+set(SOURCES Visitor.cpp Visitor.hpp
+    Expression.cpp Expression.hpp
+    Composite.cpp Composite.hpp
+)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
-
-message("CMAKE_CXX_FLAGS_DEBUG is ${CMAKE_CXX_FLAGS_DEBUG}")
-message("CMAKE_CXX_FLAGS_RELEASE is ${CMAKE_CXX_FLAGS_RELEASE}")
-message("CMAKE_CXX_FLAGS_RELWITHDEBINFO is ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
-message("CMAKE_CXX_FLAGS_MINSIZEREL is ${CMAKE_CXX_FLAGS_MINSIZEREL}")
+add_executable(test ${SOURCES} catchmain.cpp tests.cpp )
+add_executable(DesignPatterns ${SOURCES} main.cpp)

@@ -27,7 +27,7 @@ double Sum::evaluate(const std::map<std::string,double> &context)
 }
 
 Difference::Difference(unique_ptr<Expression> lhs, unique_ptr<Term> rhs)
-:_rhs(std::move(rhs)),_lhs(std::move(lhs))
+:_lhs(std::move(lhs)),_rhs(std::move(rhs))
 {}
 
 std::string Difference::toString()
@@ -41,7 +41,7 @@ double Difference::evaluate(const std::map<std::string,double> &context)
 }
 
 Product::Product(unique_ptr<Term> lhs, unique_ptr<Factor> rhs)
-:_rhs(std::move(rhs)),_lhs(std::move(lhs))
+:_lhs(std::move(lhs)),_rhs(std::move(rhs))
 {}
 
 std::string Product::toString()
@@ -55,7 +55,7 @@ double Product::evaluate(const std::map<std::string,double> &context)
 }
 
 Quotient::Quotient(unique_ptr<Term> lhs, unique_ptr<Factor> rhs)
-:_rhs(std::move(rhs)),_lhs(std::move(lhs))
+:_lhs(std::move(lhs)),_rhs(std::move(rhs))
 {}
 
 std::string Quotient::toString()
@@ -71,7 +71,7 @@ double Quotient::evaluate(const std::map<std::string,double> &context)
 Number::Number(double value) :_value(value)
 {}
 
-double Number::evaluate(const std::map<std::string,double> &context)
+double Number::evaluate(const std::map<std::string,double> &)
 {
     return _value;
 }
