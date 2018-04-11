@@ -13,7 +13,7 @@ using std::unique_ptr;
 Expression::~Expression() = default;
 
 Sum::Sum(unique_ptr<Expression> lhs, unique_ptr<Term> rhs)
-:_rhs(std::move(rhs)),_lhs(std::move(lhs))
+:_lhs(std::move(lhs)),_rhs(std::move(rhs))
 {}
 
 std::string Sum::toString()
