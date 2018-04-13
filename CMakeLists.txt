@@ -16,5 +16,5 @@ set(SOURCES Visitor.cpp Visitor.hpp
     Composite.cpp Composite.hpp
 )
 
-add_executable(test ${SOURCES} catchmain.cpp tests.cpp )
+add_executable(testsuite ${SOURCES} catchmain.cpp tests.cpp )
 add_executable(DesignPatterns ${SOURCES} main.cpp)
