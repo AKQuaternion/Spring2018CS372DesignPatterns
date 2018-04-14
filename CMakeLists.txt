@@ -14,6 +14,8 @@ project (DesignPatterns)
 set(SOURCES Visitor.cpp Visitor.hpp
     Expression.cpp Expression.hpp
     Composite.cpp Composite.hpp
+    Observer.cpp Observer.hpp
+    Subject.cpp Subject.hpp
 )
 
 add_executable(testsuite ${SOURCES} catchmain.cpp tests.cpp )

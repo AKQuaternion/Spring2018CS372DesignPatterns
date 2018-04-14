@@ -12,12 +12,15 @@ using std::endl;
 #include <memory>
 using std::unique_ptr;
 using std::make_unique;
+using std::make_shared;
 using std::move;
 #include "Expression.hpp"
 using std::map;
 using std::string;
 #include "Composite.hpp"
 #include "Visitor.hpp"
+#include "Subject.hpp"
+#include "Observer.hpp"
 
 void testExpression() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
@@ -81,7 +84,24 @@ void testComposite()
     allFiles->accept(&v);
 }
 
+
 int main() {
-    testComposite();
+//    testComposite();
+    Subject s;
+    
+    auto co = make_shared<CoutObserver>();
+    auto co2 = make_shared<CoutObserver>();
+    auto bo = make_shared<BarGraphObserver>();
+    s.attach(co);
+    s.attach(co);
+    s.attach(co2);
+    s.attach(bo);
+
+    s.setN(13);
+    s.detach(co2);
+    s.setN(67);
+    s.detach(co);
+    s.setN(1);
+    
     return 0;
 }
