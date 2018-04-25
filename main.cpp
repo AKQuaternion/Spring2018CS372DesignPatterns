@@ -21,6 +21,8 @@ using std::string;
 #include "Visitor.hpp"
 #include "Subject.hpp"
 #include "Observer.hpp"
+#include "Armor.hpp"
+#include "Command.hpp"
 
 void testExpression() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
@@ -84,24 +86,44 @@ void testComposite()
     allFiles->accept(&v);
 }
 
+void testCommand() {
+    Subject s;
+    
+    //    auto co = make_shared<CoutObserver>();
+    //    auto co2 = make_shared<CoutObserver>();
+    //    auto bo = make_shared<BarGraphObserver>();
+    //    s.attach(co);
+    //    s.attach(co);
+    //    s.attach(co2);
+    //    s.attach(bo);
+    //
+    //    s.setN(13);
+    //    s.detach(co2);
+    //    s.setN(67);
+    //    s.detach(co);
+    //    s.setN(1);
+    
+    //    unique_ptr<ArmorComponent> plate = make_unique<PlateArmor>();
+    //    cout << plate->description() << endl;
+    //    unique_ptr<ArmorComponent> rustyPlate = make_unique<RustyDecorator>(move(plate));
+    //    cout << rustyPlate->description() << endl;
+    //    unique_ptr<ArmorComponent> rustyrustyPlate = make_unique<RustyDecorator>(move(rustyPlate));
+    //    cout << rustyrustyPlate->description() << endl;
+    
+    unique_ptr<Command> c = make_unique<HelloCommand>();
+    c->execute();
+    auto f=make_shared<Fan>();
+    f->on();
+    f->off();
+    
+    HomeAutomationOnCommand fon(f);
+    
+    fon.execute();
+}
 
 int main() {
 //    testComposite();
-    Subject s;
-    
-    auto co = make_shared<CoutObserver>();
-    auto co2 = make_shared<CoutObserver>();
-    auto bo = make_shared<BarGraphObserver>();
-    s.attach(co);
-    s.attach(co);
-    s.attach(co2);
-    s.attach(bo);
-
-    s.setN(13);
-    s.detach(co2);
-    s.setN(67);
-    s.detach(co);
-    s.setN(1);
+    testCommand();
     
     return 0;
 }
