@@ -16,6 +16,8 @@ set(SOURCES Visitor.cpp Visitor.hpp
     Composite.cpp Composite.hpp
     Observer.cpp Observer.hpp
     Subject.cpp Subject.hpp
+    Armor.cpp Armor.hpp
+    Command.cpp Command.hpp
 )
 
 add_executable(testsuite ${SOURCES} catchmain.cpp tests.cpp )
