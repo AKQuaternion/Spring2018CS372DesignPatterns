@@ -18,6 +18,8 @@ set(SOURCES Visitor.cpp Visitor.hpp
     Subject.cpp Subject.hpp
     Armor.cpp Armor.hpp
     Command.cpp Command.hpp
+    MP3Player.cpp MP3Player.hpp
+    MP3PlayerState.cpp MP3PlayerState.hpp
 )
 
 add_executable(testsuite ${SOURCES} catchmain.cpp tests.cpp )

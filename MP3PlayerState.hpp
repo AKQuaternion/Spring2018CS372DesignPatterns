@@ -8,6 +8,11 @@
 #ifndef MP3PlayerState_hpp
 #define MP3PlayerState_hpp
 
-#include <stdio.h>
+class MP3PlayerState {
+public:
+    
+private:
+    
+};
 
 #endif /* MP3PlayerState_hpp */
