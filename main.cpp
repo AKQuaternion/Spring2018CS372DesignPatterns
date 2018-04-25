@@ -8,9 +8,11 @@
 
 #include <iostream>
 using std::cout;
+using std::cin;
 using std::endl;
 #include <memory>
 using std::unique_ptr;
+using std::shared_ptr;
 using std::make_unique;
 using std::make_shared;
 using std::move;
@@ -23,6 +25,7 @@ using std::string;
 #include "Observer.hpp"
 #include "Armor.hpp"
 #include "Command.hpp"
+using std::vector;
 
 void testExpression() {
     unique_ptr<Expression> pi = make_unique<Number>(3.14159);
@@ -86,39 +89,65 @@ void testComposite()
     allFiles->accept(&v);
 }
 
-void testCommand() {
+void testObserver() {
     Subject s;
     
-    //    auto co = make_shared<CoutObserver>();
-    //    auto co2 = make_shared<CoutObserver>();
-    //    auto bo = make_shared<BarGraphObserver>();
-    //    s.attach(co);
-    //    s.attach(co);
-    //    s.attach(co2);
-    //    s.attach(bo);
-    //
-    //    s.setN(13);
-    //    s.detach(co2);
-    //    s.setN(67);
-    //    s.detach(co);
-    //    s.setN(1);
+    auto co = make_shared<CoutObserver>();
+    auto co2 = make_shared<CoutObserver>();
+    auto bo = make_shared<BarGraphObserver>();
+    s.attach(co);
+    s.attach(co);
+    s.attach(co2);
+    s.attach(bo);
     
-    //    unique_ptr<ArmorComponent> plate = make_unique<PlateArmor>();
-    //    cout << plate->description() << endl;
-    //    unique_ptr<ArmorComponent> rustyPlate = make_unique<RustyDecorator>(move(plate));
-    //    cout << rustyPlate->description() << endl;
-    //    unique_ptr<ArmorComponent> rustyrustyPlate = make_unique<RustyDecorator>(move(rustyPlate));
-    //    cout << rustyrustyPlate->description() << endl;
+    s.setN(13);
+    s.detach(co2);
+    s.setN(67);
+    s.detach(co);
+    s.setN(1);
     
-    unique_ptr<Command> c = make_unique<HelloCommand>();
-    c->execute();
-    auto f=make_shared<Fan>();
-    f->on();
-    f->off();
+    unique_ptr<ArmorComponent> plate = make_unique<PlateArmor>();
+    cout << plate->description() << endl;
+    unique_ptr<ArmorComponent> rustyPlate = make_unique<RustyDecorator>(move(plate));
+    cout << rustyPlate->description() << endl;
+    unique_ptr<ArmorComponent> rustyrustyPlate = make_unique<RustyDecorator>(move(rustyPlate));
+    cout << rustyrustyPlate->description() << endl;
+}
+
+void foo() {
+    cout << "Foo!\n";
+}
+
+void testCommand() {
+    vector<unique_ptr<Command>> buttons(10);
+    for(auto &b:buttons)
+        b = make_unique<NullCommand>();
     
-    HomeAutomationOnCommand fon(f);
+    buttons[0] = make_unique<ThrowCommand>();
+    buttons[1] = make_unique<HelloCommand>();
     
-    fon.execute();
+    shared_ptr<HomeAutomationComponent> light = make_shared<LightObject>();
+    shared_ptr<HomeAutomationComponent> stereo = make_shared<StereoObject>();
+    
+    buttons[3] = make_unique<HomeAutomationOnCommand>(light);
+    buttons[4] = make_unique<HomeAutomationOffCommand>(light);
+    buttons[5] = make_unique<HomeAutomationOnCommand>(stereo);
+    buttons[6] = make_unique<HomeAutomationOffCommand>(stereo);
+    
+    buttons[7] = make_unique<MacroCommand>(vector<shared_ptr<Command>>{make_shared<HomeAutomationOnCommand>(light),
+        make_shared<HomeAutomationOnCommand>(stereo),
+        make_shared<AnyCommand>([](){cout << "We're done!\n";}),
+        make_shared<AnyCommand>(foo)
+    });
+    
+    while (1) {
+        cout << "Which button? " << endl;
+        int b;
+        cin >> b;
+        if (b==-1)
+            return;
+        buttons[b]->execute();
+    }
 }
 
 int main() {
