@@ -6,3 +6,7 @@
 //
 
 #include "MP3Player.hpp"
+
+void MP3Player::setState(std::unique_ptr<MP3PlayerState> newState) {
+    _state = std::move(newState);
+}

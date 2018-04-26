@@ -9,12 +9,14 @@
 #define MP3Player_hpp
 #include <iostream>
 #include "MP3PlayerState.hpp"
+#include <memory>
 
 class MP3Player {
 public:
     void pushNextButton();
     void pushSourceButton();
     
+    void setState(std::unique_ptr<MP3PlayerState> newState);
     void playRadio() {
         std::cout << "Playing the radio.\n";
     }
@@ -37,6 +39,8 @@ public:
     void nextMp3() {
         std::cout << "Next MP3.\n";
     }
+private:
+    std::unique_ptr<MP3PlayerState> _state;
 };
 
 #endif /* MP3Player_hpp */
