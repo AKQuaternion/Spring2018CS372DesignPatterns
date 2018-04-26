@@ -134,11 +134,13 @@ void testCommand() {
     buttons[5] = make_unique<HomeAutomationOnCommand>(stereo);
     buttons[6] = make_unique<HomeAutomationOffCommand>(stereo);
     
-    buttons[7] = make_unique<MacroCommand>(vector<shared_ptr<Command>>{make_shared<HomeAutomationOnCommand>(light),
-        make_shared<HomeAutomationOnCommand>(stereo),
-        make_shared<AnyCommand>([](){cout << "We're done!\n";}),
-        make_shared<AnyCommand>(foo)
-    });
+    buttons[7] = make_unique<MacroCommand>(vector<shared_ptr<Command>>
+                  {make_shared<HomeAutomationOnCommand>(light),
+                   make_shared<HomeAutomationOnCommand>(stereo),
+                   make_shared<AnyCommand>([]{cout << "We're done!\n";}),
+                   make_shared<AnyCommand>(foo)});
+    DoorPtr hd = make_shared<HouseDoor>();
+    buttons[8] = make_unique<HomeAutomationOnCommand>(make_shared<DoorAdapter>(hd));
     
     while (1) {
         cout << "Which button? " << endl;

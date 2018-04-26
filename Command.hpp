@@ -155,4 +155,20 @@ class GarageDoor : public Door {
         std::cout << "Pushing button to close door\n";
     }
 };
+
+using DoorPtr = std::shared_ptr<Door>;
+
+class DoorAdapter : public HomeAutomationComponent {
+public:
+    DoorAdapter(DoorPtr door):_door(door)
+    {}
+    void on() override {
+        _door->open();
+    }
+    void off() override {
+        _door->close();
+    }
+private:
+    DoorPtr _door;
+};
 #endif /* Command_hpp */
