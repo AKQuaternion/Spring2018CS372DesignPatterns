@@ -25,6 +25,8 @@ using std::string;
 #include "Observer.hpp"
 #include "Armor.hpp"
 #include "Command.hpp"
+#include "MP3Player.hpp"
+#include "MP3PlayerState.hpp"
 using std::vector;
 
 void testExpression() {
@@ -105,7 +107,9 @@ void testObserver() {
     s.setN(67);
     s.detach(co);
     s.setN(1);
-    
+}
+
+void testDecorator() {
     unique_ptr<ArmorComponent> plate = make_unique<PlateArmor>();
     cout << plate->description() << endl;
     unique_ptr<ArmorComponent> rustyPlate = make_unique<RustyDecorator>(move(plate));
@@ -154,7 +158,18 @@ void testCommand() {
 
 int main() {
 //    testComposite();
-    testCommand();
-    
+//    testCommand();
+    testObserver();
+//    MP3Player myMp3(make_unique<Off>());
+//    myMp3.pushNextButton();
+//    myMp3.pushSourceButton();
+//    myMp3.pushNextButton();
+//    myMp3.pushSourceButton();
+//    myMp3.pushNextButton();
+//    myMp3.pushNextButton();
+//    myMp3.pushSourceButton();
+//    myMp3.pushNextButton();
+//    myMp3.pushSourceButton();
+
     return 0;
 }

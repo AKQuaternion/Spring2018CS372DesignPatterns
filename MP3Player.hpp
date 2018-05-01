@@ -12,9 +12,13 @@
 #include <memory>
 
 class MP3Player {
+    friend class MP3PlayerState;
 public:
+    MP3Player(std::unique_ptr<MP3PlayerState> newState);
     void pushNextButton();
     void pushSourceButton();
+    
+private:
     
     void setState(std::unique_ptr<MP3PlayerState> newState);
     void playRadio() {

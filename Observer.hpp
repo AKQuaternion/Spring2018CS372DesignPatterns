@@ -17,6 +17,7 @@ public:
 class CoutObserver : public Observer {
 public:
     void update (int n) const override;
+    int _member=5;
 };
 
 class BarGraphObserver : public Observer {
